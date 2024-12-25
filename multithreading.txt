@@ -1,0 +1,140 @@
+
+1. What do you mean by Multithreading? Why is it important?
+Multithreading refers to the ability of a CPU (or a single core) to provide multiple threads of execution concurrently, supported by the operating system. A thread is the smallest unit of a CPU’s execution, and multithreading allows a program to execute multiple threads in parallel, which improves the efficiency and performance of the program.
+
+Importance of Multithreading:
+
+Efficiency: Multithreading allows for better utilization of CPU resources. Multiple threads can run in parallel, improving the overall throughput of a program.
+Responsiveness: In a GUI application, multithreading ensures that the UI remains responsive while other tasks, such as data processing, are being performed in the background.
+Improved performance: On multicore processors, multithreading can significantly speed up the program as threads can run on separate cores.
+Resource sharing: Multiple threads share the same resources (memory, etc.), making it easier to manage and reducing overhead.
+2. What are the benefits of using Multithreading?
+Some key benefits of using multithreading include:
+
+Improved Performance: Multithreading allows for parallel execution, utilizing multiple CPU cores for faster processing, especially in CPU-bound tasks.
+Better Resource Utilization: By running multiple threads in parallel, CPU utilization is maximized, which is beneficial in systems with multiple processors or cores.
+Enhanced User Experience: In interactive applications, such as graphical user interfaces (GUIs), multithreading allows for better user responsiveness by executing time-consuming tasks in the background (e.g., file downloading while keeping the UI active).
+Simpler Code for Asynchronous Operations: Multithreading enables easier handling of asynchronous operations such as networking, database operations, or background calculations.
+Concurrency: Multithreading helps achieve concurrency, enabling several threads to operate independently while sharing the same resources, making it ideal for tasks like handling multiple user requests on a server.
+3. What is Thread in Java?
+A thread in Java is a lightweight process that allows the program to perform multiple operations concurrently. It is the smallest unit of execution in Java. Threads in Java are managed by the Thread class, and each thread has its own execution path, but all threads share the same memory space.
+
+A thread executes a run() method which contains the code to be executed.
+Java provides built-in support for multithreading through the Thread class and the Runnable interface.
+Example of creating a thread:
+
+java
+Copy code
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread is running");
+    }
+}
+
+public class ThreadExample {
+    public static void main(String[] args) {
+        MyThread t = new MyThread();
+        t.start();  // Start the thread
+    }
+}
+4. What are the two ways of implementing a thread in Java?
+In Java, threads can be implemented in two ways:
+
+By Extending the Thread Class:
+
+You can create a new class that extends the Thread class and override its run() method to define the code that will be executed by the thread.
+Example:
+
+java
+Copy code
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread is running");
+    }
+}
+By Implementing the Runnable Interface:
+
+The Runnable interface represents a task that can be executed by a thread. You create a class that implements Runnable and override its run() method. Then you create a Thread object and pass the Runnable object to the Thread constructor.
+Example:
+
+java
+Copy code
+class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Thread is running");
+    }
+}
+
+public class ThreadExample {
+    public static void main(String[] args) {
+        MyRunnable myRunnable = new MyRunnable();
+        Thread t = new Thread(myRunnable);
+        t.start();  // Start the thread
+    }
+}
+5. What's the difference between thread and process?
+Aspect	Thread	Process
+Definition	A thread is the smallest unit of execution in a program. It shares the same memory space and resources with other threads in the same process.	A process is an independent program that runs in its own memory space and contains one or more threads.
+Memory	Threads within the same process share the same memory.	Processes have separate memory spaces.
+Resource Usage	Threads are lightweight and share resources such as memory, which reduces overhead.	Processes are heavier and have their own allocated resources.
+Communication	Threads communicate easily with each other because they share the same memory.	Processes have to use inter-process communication (IPC) mechanisms to communicate.
+Creation Overhead	Threads have less overhead because they share memory.	Processes have higher overhead due to their independent memory space.
+Execution	Multiple threads can execute within a single process.	A process can have multiple threads, but it’s independent of other processes.
+6. How can we create daemon threads?
+In Java, a daemon thread is a low-priority thread that runs in the background to perform housekeeping tasks. Daemon threads do not prevent the program from exiting when all non-daemon threads have finished executing.
+
+To create a daemon thread, you use the setDaemon(true) method on a Thread object before starting the thread.
+
+Example:
+
+java
+Copy code
+class DaemonThread extends Thread {
+    public void run() {
+        while (true) {
+            System.out.println("Daemon thread is running");
+        }
+    }
+}
+
+public class DaemonExample {
+    public static void main(String[] args) {
+        DaemonThread daemon = new DaemonThread();
+        daemon.setDaemon(true);  // Set the thread as a daemon thread
+        daemon.start();          // Start the daemon thread
+        System.out.println("Main thread finished");
+    }
+}
+In this example, the main thread exits, but the daemon thread continues to run in the background until the program ends.
+
+7. What are the wait() and sleep() methods?
+In Java, both wait() and sleep() methods are used to pause the execution of a thread, but they have different purposes and behavior:
+
+wait() method:
+
+It is used in synchronized blocks or methods to make the current thread wait until another thread sends a notification (using notify() or notifyAll()).
+The wait() method is called on an object, and the thread releases the lock while it waits.
+It can be used for inter-thread communication.
+Example:
+
+java
+Copy code
+synchronized (obj) {
+    obj.wait();  // The thread waits until notified
+}
+sleep() method:
+
+It is a static method of the Thread class that pauses the current thread for a specified amount of time.
+It does not release any locks on the resources and is used for delaying the execution of a thread.
+Example:
+
+java
+Copy code
+try {
+    Thread.sleep(2000);  // Pauses the thread for 2 seconds
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+Key Differences:
+wait() is used for inter-thread communication (synchronization), while sleep() is used to pause the execution of a thread for a specified time.
+wait() releases the lock on the object, whereas sleep() does not release the lock.
